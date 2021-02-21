@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:12.1-alpine
+    container_name: go_rest_api_db
+    hostname: go_rest_api_db
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: restapi_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/db/postgresql:/var/lib/postgresql/data

@@ -36,7 +36,7 @@ func main()  {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	//fmt.Printf("%#v", config)
 	// создаемнаш апи сервер
 	s := apiserver.New(config)
 	if err := s.Start(); err != nil {
