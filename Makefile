@@ -11,8 +11,15 @@ db_into:
 	docker-compose exec db sh
 
 .PHONY: up
-up:
+up: up-container permission
+
+.PHONY: up-container
+up-container:
 	docker-compose up -d
+
+.PHONY: permission
+permission:
+	sudo chmod 777 -R docker/db
 
 .PHONY: down
 down:
