@@ -5,12 +5,15 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 	"golang.org/x/crypto/bcrypt"
 )
-
+/*
+ ключ "omitempty", говорит что если поле пустое, то не возвращать в ответе
+ ключ "-", говорит что вообще не возвращать при рендере
+*/
 type User struct {
-	ID int
-	Email string
-	Password string
-	EncryptedPassword string
+	ID 				  int `json:"id"`
+	Email             string `json:"email"`
+	Password          string `json:"password,omitempty"`
+	EncryptedPassword string `json:"-"`
 }
 
 func (u *User) Validate() error {
@@ -35,6 +38,11 @@ func (u *User) BeforeCreate() error {
 	}
 
 	return nil
+}
+
+// функция затирает поля, которые мы не хотим отдавать
+func (u *User) Sanitize() {
+	u.Password = ""
 }
 
 func encryptString(s string) (string, error) {
