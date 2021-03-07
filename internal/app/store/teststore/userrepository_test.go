@@ -36,3 +36,20 @@ func TestUserRepository_FindByEmail_Success(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, u)
 }
+func TestUserRepository_FindByID_Fail(t *testing.T) {
+
+	s := teststore.New()
+	id := 33
+	_, err := s.User().Find(id)
+	assert.EqualError(t, err, store.ErrRecordNotFound.Error())
+}
+
+func TestUserRepository_FindByID_Success(t *testing.T) {
+
+	s := teststore.New()
+	u1 := model.TestUser(t)
+	s.User().Create(u1)
+	u2, err := s.User().Find(u1.ID)
+	assert.NoError(t, err)
+	assert.NotNil(t, u2)
+}

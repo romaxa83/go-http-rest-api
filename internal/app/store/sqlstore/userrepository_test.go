@@ -42,3 +42,25 @@ func TestUserRepository_FindByEmail_Success(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, u)
 }
+
+func TestUserRepository_FindByID_Fail(t *testing.T) {
+	db, teardown := sqlstore.TestDB(t, databaseURL)
+	defer teardown("users")
+
+	s := sqlstore.New(db)
+	id := 22
+	_, err := s.User().Find(id)
+	assert.EqualError(t, err, store.ErrRecordNotFound.Error())
+}
+
+func TestUserRepository_FindByID_Success(t *testing.T) {
+	db, teardown := sqlstore.TestDB(t, databaseURL)
+	defer teardown("users")
+
+	s := sqlstore.New(db)
+	u1 := model.TestUser(t)
+	s.User().Create(u1)
+	u2, err := s.User().Find(u1.ID)
+	assert.NoError(t, err)
+	assert.NotNil(t, u2)
+}
